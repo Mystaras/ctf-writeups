@@ -12,11 +12,11 @@ Description:
 
 ## Takeaways
 
-Importing/Loading wild ML models can result in arbitrary code execution.
+Importing/Loading wild ML models can result in arbitrary code execution. Thus, it is advised to load only models from trusworthy sources.
 
 ## Challenge
 
-In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it, and set it in evaluation mode. The evaluation in itself is not that interesting, but, PyTorch is well known to be insecure when loading a model from the wilderness.
+In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it, and sets it in evaluation mode. The evaluation in itself is not that interesting, but, PyTorch is well known to be insecure when loading a model from the wilderness.
 
 As stated in the [documentation](https://pytorch.org/docs/stable/generated/torch.load.html#torch.load):
 
