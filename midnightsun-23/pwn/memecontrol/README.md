@@ -16,7 +16,7 @@ Importing/Loading wild ML models can result in arbitrary code execution.
 
 ## Challenge
 
-In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it and evaluates it. The evaluation in itself is not that interesting but PyTorch is well known to be insecure when loading model from the wilderness.
+In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it and evaluates it. The evaluation in itself is not that interesting but PyTorch is well known to be insecure when loading a model from the wilderness.
 
 As stated in the [documentation](https://pytorch.org/docs/stable/generated/torch.load.html#torch.load):
 
@@ -56,7 +56,7 @@ except Exception as e:
 ```
 
 ## Solution
-Credits where they are due, we base our approach on the [patch-torch-save](https://github.com/yk/patch-torch-save) repo from `yk` that shows how to *poison* an existing model. And modify it to our needs.
+Credits where they are due, we built our approach on the [patch-torch-save](https://github.com/yk/patch-torch-save) repo from `yk` that shows how to *poison* an existing model.
 
 A model in itself is simply a dictionary, since we want to limit our payload as much as possible, and the actual usability of the model is of no concern, we define our model an plain dictionary. But an attacker could always use a legit large model. 
 
@@ -69,7 +69,7 @@ super_ml_model: dict = {
 
 We define a `dict` subclass with a custom `__reduce__` function which will be called when the dict object will be pickled by `torch.save()`. 
 
-`__reduce__` takes as a parameter a callable object that will be called to create the initial version of the object. In our case we chose to simple use `exec` to execute any arbitrary code. Since there are no checks our malicious code is as simple as it gets, the good ol' `os.system('/bin/sh')`.
+`__reduce__` takes as a parameter a callable object that will be called to create the initial version of the object. In our case, we chose to simple use `exec` to execute any arbitrary code. Since there are no checks, our malicious code is as simple as it gets, the good ol' `os.system('/bin/sh')`.
 
 
 ```python
@@ -93,7 +93,7 @@ malicious_dict = BadDict(malicious_code, **super_ml_model)
 torch.save(malicious_dict, "memecontrol.pth")
 ```
 
-And we are all set! Now when the model will be unpickled using `torch.load()`, the malicious code will be executed. And we can simply cat the flag file.
+And we are all set! Now when the model will be unpickled by `torch.load()`, the malicious code will be executed. And we can simply cat the flag file.
 
 ```python
 In [1]: import torch
