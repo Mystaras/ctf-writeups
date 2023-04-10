@@ -69,7 +69,7 @@ super_ml_model: dict = {
 
 We define a `dict` subclass with a custom `__reduce__` function which will be called when the dict object will be pickled by `torch.save()`. 
 
-`__reduce__` takes as a parameter a callable object that will be called to create the initial version of the object. In our case, we chose to simple use `exec` to execute any arbitrary code. Since there are no checks, our malicious code is as simple as it gets, the good ol' `os.system('/bin/sh')`.
+`__reduce__` takes as a parameter a callable object that will be called to create the initial version of the object. In our case, we chose to simply use `exec` to execute any arbitrary code. Since there are no checks, our malicious code is as simple as it gets, the good ol' `os.system('/bin/sh')`.
 
 
 ```python
