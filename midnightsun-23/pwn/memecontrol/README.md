@@ -16,7 +16,7 @@ Importing/Loading wild ML models can result in arbitrary code execution.
 
 ## Challenge
 
-In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it and evaluates it. The evaluation in itself is not that interesting but PyTorch is well known to be insecure when loading a model from the wilderness.
+In this challenge we are given a piece of python code that expects a base64 encoded ML model, loads it, and set it in evaluation mode. The evaluation in itself is not that interesting, but, PyTorch is well known to be insecure when loading a model from the wilderness.
 
 As stated in the [documentation](https://pytorch.org/docs/stable/generated/torch.load.html#torch.load):
 
@@ -58,7 +58,7 @@ except Exception as e:
 ## Solution
 Credits where they are due, we built our approach on the [patch-torch-save](https://github.com/yk/patch-torch-save) repo from `yk` that shows how to *poison* an existing model.
 
-A model in itself is simply a dictionary, since we want to limit our payload as much as possible, and the actual usability of the model is of no concern, we define our model an plain dictionary. But an attacker could always use a legit large model. 
+A model in itself is simply a dictionary, since we want to limit our payload as much as possible, and the actual usability of the model is of no concern. We define our model an plain dictionary. But an attacker could always use a legit large model. 
 
 ```python
 super_ml_model: dict = {
@@ -104,7 +104,7 @@ midnight{backd00r5_ar3_c00l_wh3n_th3Y_ar3_yoUR5}
 ```
 
 ## Final Exploit
-`exploit.py` uses pwntools to automate the exploit both locally and remotely. Assuming you have all the required packages you can test the exploit locally with:
+`exploit.py` uses pwntools to automate the exploit both locally and remotely. Assuming you have all the required packages, you can test the exploit locally with:
 ```bash
 $ python3 exploit.py LOCAL
 
