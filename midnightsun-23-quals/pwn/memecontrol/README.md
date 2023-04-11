@@ -8,11 +8,11 @@ Description:
 >
 > flag: midnight{backd00r5_ar3_c00l_wh3n_th3Y_ar3_yoUR5}
 
-**Tags:** Python, PyTorch, Pickle Deserialization, Midnight Sun CTF
+**Tags:** Python, PyTorch, Pickle Deserialization, Midnight Sun CTF Quals 2023
 
 ## Takeaways
 
-Importing/Loading wild ML models can result in arbitrary code execution. Thus, it is advised to load only models from trusworthy sources.
+Importing/Loading wild ML models can result in arbitrary code execution. Thus, it is advised to only load models from trustworthy sources.
 
 ## Challenge
 
