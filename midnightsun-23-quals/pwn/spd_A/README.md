@@ -89,7 +89,7 @@ for (size_t i = 0; i < input_size; ++i ) {
     }
 }
 
-if ( mprotect(buf, 0x1000uLL, 5) == -1 ){ # PROT_READ | PROT_EXEC
+if ( mprotect(buf, 0x1000uLL, 5) == -1 ){ // PROT_READ | PROT_EXEC
     perror("mprotect failed");
     return 1;
 } else {
