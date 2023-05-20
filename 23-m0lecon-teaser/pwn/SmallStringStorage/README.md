@@ -33,10 +33,10 @@ The program is a *custom page allocator* that seems to store strings in elements
 2. Edit a previously created page
     - Get the number of elements in the page
     - Add an element to the page: The element is an array with size is set to 10. The elements id starts at 0 and is incremented by the program at every add.
-    - Edit element in page: Edit an index of the element (`0<=x<10`).
-        - CHARACTER: Store a character to the specific index.
-        - JUMP: Jump to the an index of the element.
-        - END
+    - Edit element in page: Edit an index of the element (`0 <= x < 10`) with one of the following instructions.
+        - `CHARACTER`: Store a character to the specific index.
+        - `JUMP`: Jump to the an index of the element.
+        - `END`
     - Execute element in page: Executes the instructions of the specified element of a page starting from index 0. Stores the string created. 
     
         > e.g. `|0: Z|1: JUMP 3|2: B|3: T|4: END|5: A|...|9:F|` will yield the string `ZT` since the JUMP at index 1 skips `B`, and, everything after an `END` instruction is omitted.
