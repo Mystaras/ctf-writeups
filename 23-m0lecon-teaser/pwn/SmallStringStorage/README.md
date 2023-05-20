@@ -331,9 +331,11 @@ So from what we saw in the `get` method we want a case where `curr = key[pos = p
 
 > A small useless side note of something I noticed; given the current implementation, we can have collision even without matching hashes. Assume you have 3 keys `x,y,z`, where `x,y` have a hash=1 and `z` a hash=2. `x` will be stored at index `1`, `y` at index `1+1`. And while `z` should have been stored at `2` it will be stored at `2+1`. Meaning that the lookup of `z` goes through `y` even if they don't share a hash. This is not exactly true as explained but you get the idea. This is interesting because if you massage the keys in the map well enough, you could move a key way far from it's designated position even without it colliding with any of the other keys.
 
-Regardless, lets have a look at the removing method. So it looks quite similar to to `get` method as it is also searching for the page to remove. Again I will leave the comments on the code.
+Regardless, lets have a look at the `remove()` method. Naturally it looks quite similar to the `get()` method as it is also searching for the page to remove. Again I will leave the comments on the code.
 
 ```java
+// ../it/unimi/dsi/fastutil/longs/Long2ObjectOpenHashMap.class
+
 public V remove(long k) {
     if (k == 0L) {
         return this.containsNullKey ? this.removeNullEntry() : this.defRetValue;
