@@ -694,7 +694,7 @@ All set! If you wish to run the exploit:
 - unzip `SmallStringStorage.zip`
 - build the `collisions.json` file using [collisions.py](collisions.py) (**WARNING** it creates a 2GB json) and run the script to leak the flag. I suggest you use `pypy`
 
-```console
+```bash
 $ pypy collisions.py
 
 You will have to create a map of size 7372
@@ -750,4 +750,4 @@ $
 
 ## Bonus
 
-[Long2ObjectOpenHashMap.py](Long2ObjectOpenHashMap.py) implements the `add()` and `get()` methods of the original library. Can be useful if you wish to implement the add  exploit.
+[Long2ObjectOpenHashMap.py](Long2ObjectOpenHashMap.py) implements the `add()` and `get()` methods of the original library. Can be useful if you wish to implement the *add variant* exploit.
