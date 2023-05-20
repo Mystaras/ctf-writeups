@@ -181,7 +181,8 @@ public class SmallString {
         int i = 0;
 
         // while Instruction is not END
-        for(Instruction instruction = this.generator[i].getType(); instruction != Instruction.END; instruction = this.generator[i].getType()) {
+        for(Instruction instruction = this.generator[i].getType(); instruction != Instruction.END; 
+                        instruction = this.generator[i].getType()) {
             if (instruction == Instruction.CHARACTER) {
                 // If `CHARACTER`: concatenate to `generated`
                 this.generated = this.generated + this.generator[i].getCharacter();
