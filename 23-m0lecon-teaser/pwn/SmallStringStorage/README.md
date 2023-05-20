@@ -1,13 +1,14 @@
 # SmallStringStorage
-> Category: pwn
-
-Description:
+> **Category:** pwn
+>
+> **Description:**
+> 
 > Author: @Alberto247
 >
 > I've invented a new system to store strings on disks! This PoC shows my idea, however my friend says it cannot be used to store all kind of strings.
 I want to prove him wrong, can you help me?
 >
-> flag: :(
+> flag: :disappointed:
 
 **Tags:** Java, pwn, Long2ObjectOpenHashMap, Thread safety, Hashcode collision, m0leCon Teaser 2023
 
@@ -239,7 +240,7 @@ My first idea was to unload the page, then, run the `Checker`. But that is not p
 
 Additionally, notice the `SmallStringStorage::lockedPage` variable, it serves as a *pseudo* semaphore to block the user from unloading the page while the checker runs. The semaphore does not restrict editing the page while the checker is processing it, but, there is no way to unload the page. Meaning there is no way to trigger `Page::calculatePage()`. 
 
-So, we can't directly unload a page while the checker is processing it... Is there a way to indirectly trigger the unloading of the page? Well at first sight no, this is Java. 
+So, we can't directly unload a page while the checker is processing it... Is there a way to indirectly trigger the unloading of the page? Well at first sight no, this is Java :expressionless:. 
 
 
 ```java
@@ -287,7 +288,7 @@ And this is where I got stuck until the end of the CTF. I knew I had to trigger 
 
 This is where understanding the implementation of `Long2ObjectOpenHashMap` comes into place, for which there exists a thread safe version; `SynchronizedLong2ObjectMap`. So we have to figure out a way to take advantage of the thread unsafe one. I believe that both strategies of removing/adding to the map would work but I went with the removing one. 
 
-So bare with me while we dive into `it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap`. And let's start with the actual `get()` method that retrieves an object (in our case a page) from the map, and see if anything rings an alarm. 
+So bare with me while we dive into `it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap` :grimacing:. And let's start with the actual `get()` method that retrieves an object (in our case a page) from the map, and see if anything rings an alarm. 
 
 > Before I do so, let me explain a thing or two about hashmaps to add some context. If you are already familiar with how they work feel free to skip this part. A hashmap stores an object into a structure with its corresponding *key*. To decide the exact position where it will be stored the `hash` of the key is computed. A hashmap of size `n` can have at most `n` hashes (Depending if 0 is used) which means that the hash of multiple keys can be the same. The keys that have the same hash are stored into buckets. Thus, there are `n` buckets in a hash map of size `n`. Hashmaps are generally known to be super efficient due to this process but what happens when you have multiple colliding keys? Well in the case of `Long2ObjectOpenHashMap` the bucket is iterated linearly until it finds a matching keys. Making collisions quite expensive.
 
@@ -687,12 +688,12 @@ while True: # Try until it hits
             mainMenu.unload_page(n)
 ```
 
-## Run the exploit locally
+### Run the exploit locally
 
 All set! If you wish to run the exploit:
 
 - unzip `SmallStringStorage.zip`
-- build the `collisions.json` file using [collisions.py](collisions.py) (**WARNING** it creates a 2GB json) and run the script to leak the flag. I suggest you use `pypy`
+- build the `collisions.json` file using [collisions.py](collisions.py) (:warning: it creates a 2GB json) and run the script to leak the flag. Run with `pypy` to avoid hight memory usage.
 
 ```bash
 $ pypy collisions.py
@@ -724,7 +725,7 @@ $ python3 exploit.py LOCAL
 [+] Append:  
 [+] Append: i
 [+] Append: t
-[+] Append: '
+[+] Append: \'
 [+] Append: s
 [+] Append:  
 [+] Append: p
