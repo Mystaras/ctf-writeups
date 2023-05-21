@@ -235,7 +235,7 @@ public void calculatePage() { // Call `calculateString()` for all elements
     }
 ```
 
-Now we know have a clear idea of what we have to do; [4. Write all memory](README.md#functionality) (backup teh pages), then [3. Unload the page from memory storage](README#functionality) and finally trigger a load from the backend withing the `Checker::run()`. But, here is where the actual challenge starts.
+Now we know have a clear idea of what we have to do; [4. Write all memory](README.md#functionality) (backup the pages), then [3. Unload the page from memory storage](README#functionality) and finally trigger a load from the backend withing the `Checker::run()`. But, here is where the actual challenge starts.
 
 My first idea was to unload the page, then, run the `Checker`. But that is not possible since the application calls `getPage(id)` before the `Checker` thread is create. So this is not an option.
 
@@ -386,12 +386,9 @@ protected final void shiftKeys(int pos) {
     long[] key = this.key;
 
     while(true) {
-        //NOTE: I am not sure why they named the variable `last`
-        //      Should have been called target or something
         int last = pos;
         //NOTE: Looks for the next page in the bucket
         pos = pos + 1 & this.mask;
-
         long curr;
 
         while(true) {
@@ -403,7 +400,7 @@ protected final void shiftKeys(int pos) {
                 return;
             }
 
-            //NOTE: it look for the last page in the map
+            //NOTE: it will skip over the indexes that have an un-matching hash
             int slot = (int)HashCommon.mix(curr) & this.mask;
             if (last <= pos) {
                 if (last >= slot || slot > pos) {
@@ -416,8 +413,7 @@ protected final void shiftKeys(int pos) {
             pos = pos + 1 & this.mask;
         }
 
-        //NOTE: once the last page of the bucket is found 
-        //      it takes the place of the one to be removed
+        //NOTE: shift all the collides to the left
         key[last] = curr;
         this.value[last] = this.value[pos];
     }
@@ -425,19 +421,18 @@ protected final void shiftKeys(int pos) {
 ```
 
 
-> This is the part where I think the *adding strategy* and triggering rehashing might have been more effective. As you can see, we currently have a single golder moment. If we had opted for the rehashing strategy, the size of the map would have doubled and the page identifiers would have been scattered around the map. Resulting in a higher chance of hitting an empty key while iterating. This would of course require simulating the rehashing to carefully chose the page you want to hit. But could also work randomly. Regardless I am too deep into the removing approach to back down.
+> This is the part where I think the *adding strategy* and triggering rehashing might have been more effective. As you can see, we currently have a single golden moment. If we had opted for the rehashing strategy, the size of the map would have doubled and the page identifiers would have been scattered around the map. Resulting in a higher chance of hitting an empty key while iterating. This would of course require simulating the rehashing to carefully chose the page you want to hit. But could also work randomly. Regardless I am too deep into the removing approach to back down.
 
 By now you must have understood where this is going. By adding to the map a large amount of colliding pages we can ensure that the `getPage(this.pageId)` in `SmallString s = this.memstore.getPage(this.pageId).getSmallString(i);` of `Checker::run()` will be at its most inefficient. Combine that with adding a very large amount of elements to the page and the hit window just increased considerably. 
+We have an additional golden moment, if we remove at exactly the last iteration before our target page is found. Since the page will be shifted to take the place of the previous it's old position will be 0. But this is partially part of our already existing golden moment. 
 
 So lets make a list of our requirements:
 1. We want to have a maximum of *colliding* pages.
 2. We want to have the `checker` look for the last one as it will create the largest window.
 3. We want to perform multiple removes while the checker is processing the page
-    - We do not want to remove a page at the start of the bucket because then it will get replaced with our target page, thus, breaking our requirement 2.
-    - We do not want to remove a page close to the end of the bucket because our remove will also take a long time to find them in order to remove them
 4. We want our golden opportunity to be open for as long as possible so we should be relatively far from the end of the bucket
 
-We cannot predict everything, but we can try to make the best of what we have. So lets start with our *requirement 1.*, and ensure that we only create pages with colliding keys (id). I have written a script that will brute-force colliding pages for a map of size `8192` which I recon will be enough. The reason I chose an aligned size has to do with the implementation of `Long2ObjectOpenHashMap`. 
+To make the best of what we have. So lets start with our *requirement 1.*, and ensure that we only create pages with colliding keys (id). I have written a script that will brute-force colliding pages for a map of size `8192` which I recon will be enough. The reason I chose an aligned size has to do with the implementation of `Long2ObjectOpenHashMap`. 
 
 The map created is always `**2` aligned, depends on the size and load factor and is computed by the `arraySize()` method. In short, it finds the next power of two of the `size / load factor`. The reason this is important is because we have to be careful with the size, as collisions are size dependant. Thus if we want to create a map of size `8192` we will have to request a size of `floor(8192 * 0.9)` and avoid rehashing.
 
@@ -474,7 +469,7 @@ class HashMapCollisions:
 
 As you can see the hashmap of a *key* is computed with `_mix(key) & (size-1)`. This allows us to brute-force a good amount of keys for each hash. Keep in mind we only need `floor(8192 * 0.9) - 1` as we do not want to trigger rehashing.
 
-Regarding our *requirement 2.*, we can ensure this by targeting the page that we added last. If all pages we add collide we are guaranteed for it to be added at the end. As for *requirements 3. and 4.*, since we are working with a map of size `8192` with an actual limit of `7372-1` elements I believe trying to remove 1000 pages somewhere in the middle should be more than enough.
+Regarding our *requirement 2.*, we can ensure this by targeting the page that we added last. If all pages we add collide we are guaranteed for it to be added at the end. As for *requirements 3. and 4.*, since we are working with a map of size `8192` with an actual limit of `7372-1` elements I believe trying to remove 1000 pages from the end should be more than enough.
 
 
 ## Exploit
