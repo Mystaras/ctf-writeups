@@ -490,34 +490,34 @@ So lets model an step by step scenario of our exploit:
 Let me explain how we will perform step 9. with the different phases of the `generator` before I get into the actual exploit:
 
 - Step 1.
-We write our char at index 0, the `JUMP 1->2` serves as an intermediate and then create in an infinite loop `2<->3`
+Write the char at index 0, the `JUMP 1->2` serves as an intermediate jump, and then `2<->3` blocks in an infinite loop 
 ```
 |0. CHAR:i_1|1. JUMP:2|2. JUMP:3|3. JUMP:2|4. END|
 ```
 
 - Step 2.
-Modify `JUMP 1->2` to `JUMP 1->1`, so it blocks at 1.
+Modify `JUMP 1->2` to `JUMP 1<->1`, so that it gets stuck at 1. Modify index 0 to the next char we wish to write.
 ```
 |0. CHAR:i_2|1. JUMP:1|2. JUMP:3|3. JUMP:2|4. END|
 ```
 
 - Step 3.
-Break the infinite loop to go to the char: `JUMP 3->1`. (It will then get stuck at `1->1`)
+Break the infinite loop to write the next char: `JUMP 3->1`. (It will then get stuck at `1<->1`)
 ```
 |0. CHAR:i_2|1. JUMP:1|2. JUMP:3|3. JUMP:1|4. END|
 ```
 
 - Step 4.
-Rebuild infinite loop by modifying `JUMP 3->1` to `JUMP 2->3` 
+Rebuild infinite loop by modifying `JUMP 3->1` to `JUMP 2->3`. Restore the intermediate jump `1->2`. Blocking again at `2<->3`.
 ```
-|0. CHAR:i_2|1. JUMP:1|2. JUMP:3|3. JUMP:2|4. END|
+|0. CHAR:i_2|1. JUMP:2|2. JUMP:3|3. JUMP:2|4. END|
 ```
 
-- Back to step 1. until all is written. Then, break out of infinite loop `JUMP 3->4`
+- Back to step 2. until all characters are written. Then, break out of infinite loop `JUMP 3->4`
 
 ### exploit.py
 
-From here everything is prey straightforward, I created a small API to communicate with the program which can be found in [exploit.py](exploit.py#L84). The key elements of the script are:
+From here everything is pretty straightforward, I created a small API to communicate with the program which can be found in [exploit.py](exploit.py#L84). The key elements of the script are:
 
 ```python
 '''
