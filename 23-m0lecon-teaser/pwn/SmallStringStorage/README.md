@@ -421,10 +421,10 @@ protected final void shiftKeys(int pos) {
 ```
 
 
-> This is the part where I think the *adding strategy* and triggering rehashing might have been more effective. As you can see, we currently have a single golden moment. If we had opted for the rehashing strategy, the size of the map would have doubled and the page identifiers would have been scattered around the map. Resulting in a higher chance of hitting an empty key while iterating. This would of course require simulating the rehashing to carefully chose the page you want to hit. But could also work randomly. Regardless I am too deep into the removing approach to back down.
+> This is the part where I think the *adding strategy* and triggering rehashing might have been more effective. As you can see, we currently have a single golden moment. If we had opted for the rehashing strategy, the size of the map would have doubled and the page identifiers would have been scattered around the map. Resulting in a higher chance of hitting an empty key while iterating. This would of course require simulating the rehashing to carefully chose the page you want to hit. But could also work randomly. Regardless I am too deep into the removing approach to back down. And overall, I believe the remove approach while a pain is more interesting because it still works even if the program had a size protection to avoid rehashing.
 
 By now you must have understood where this is going. By adding to the map a large amount of colliding pages we can ensure that the `getPage(this.pageId)` in `SmallString s = this.memstore.getPage(this.pageId).getSmallString(i);` of `Checker::run()` will be at its most inefficient. Combine that with adding a very large amount of elements to the page and the hit window just increased considerably. 
-We have an additional golden moment, if we remove at exactly the last iteration before our target page is found. Since the page will be shifted to take the place of the previous it's old position will be 0. But this is partially part of our already existing golden moment. 
+**We have an additional golden moment**, if the remove happens at exactly the last iteration before our target page is found. Since the page will be shifted to take the place of the previous it's old position will be 0.
 
 So lets make a list of our requirements:
 1. We want to have a maximum of *colliding* pages.
@@ -485,6 +485,7 @@ So lets model an step by step scenario of our exploit:
 7. Trigger a large amount of removes (or add if that is what you are into).
 8. Check if the checker is stuck in an infinite loop by getting a `"Page not found in memory storage, loading from backend"` message.
 9. Write our string one byte at a time.
+
 
 ### Infinite Loop
 Let me explain how we will perform step 9. with the different phases of the `generator` before I get into the actual exploit:
@@ -606,9 +607,9 @@ def probe(ms: int, remove_count: int):
         return True
 
 '''
-The actual leaking function once the checker is stuck
+The actual function that writes the secret once the checker is stuck
 '''
-def leak(page: int, data: str):
+def write_secret(page: int, data: str):
     io.sendline(b"")
     mainMenu.edit_page(page)
     pageMenu.edit_element(0)
@@ -675,7 +676,7 @@ while True: # Try until it hits
         fuck_yea = probe(p, rem)
         if fuck_yea:
             io.clean()
-            leak(last_page, secret[1:])
+            write_secret(last_page, secret[1:])
 
         io.clean()
         io.sendline(b"") # Recalibrate
@@ -691,7 +692,7 @@ while True: # Try until it hits
 All set! If you wish to run the exploit:
 
 - unzip `SmallStringStorage.zip`
-- build the `collisions.json` file using [collisions.py](collisions.py) (:warning: it creates a 2GB json) and run the script to leak the flag. Run with `pypy` to avoid hight memory usage.
+- build the `collisions.json` file using [collisions.py](collisions.py) (:warning: it creates a 2GB json) and run the script to get the flag. Run with `pypy` to avoid hight memory usage.
 
 ```bash
 $ pypy collisions.py
