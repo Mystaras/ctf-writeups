@@ -17,12 +17,12 @@ Using this we can slowly reduce the number of potential dictionary words untill 
 def try_word(secret):
   return 3 lists:
   - list of characters that were at the correct position (correct)  
-  - list of characters that where at the wrong position (wrong_position)
+  - list of characters that where at the wrong position (wrong_pos)
   - list of characters that where not correct and not at the wrong position (wrong)
 
   # e.g. Real secret is "1234" and we attempted "1245":
   # - correct = ['1', '2', Null, Null]
-  # - wrong_position = [Null, Null, 4, Null]
+  # - wrong_pos = [Null, Null, 4, Null]
   # - wrong = [5]
   # So next try we will try to insert 4 at a different index (3) than it was (2).
 
@@ -34,7 +34,7 @@ def filter_dictionary(correct, wrong_pos, wrong):
   Remove from the dictionary words that don't have the correct characters at the correct index (correct)
   # In the above example, all words where the 1st and 2nd character are not '1', '2'
 
-  Remove from the dictionary words that have characters in the position that was wrong (wrong_position)
+  Remove from the dictionary words that have characters in the position that was wrong (wrong_pos)
   # In the above example, all words that have a '4' as their 3rd character
 
   Remove all words that don't have the contender character (wrong_pos)
@@ -55,7 +55,7 @@ for i := 0 to size(alphabet):
 while True:
 
   for i := 0 to size_word:
-    if (c := wrong_position[i]) != Null:
+    if (c := wrong_pos[i]) != Null:
       j := index to insert potential contender that should be different than `i` and not in GLOBAL_wrong_position[c].
       secret[j] := c
 
