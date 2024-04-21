@@ -4,10 +4,10 @@ Mastermind game using dictionary
 ## Presentation
 We are given a large dictionary and have to decrease the number of contenders. What we know about the word:
 - The size of the word
-- The caracter is either a number or a letter (no special chars and Capitalisation is not important)
+- The character is either a number or a letter (no special chars and Capitalisation is not important)
 - If a character is correct and at the correct position
 - If a character is correct but at the wrong posistion
-- If a character does not exist
+- If a character does not exist in the word
 
 Using this we can slowly reduce the number of potential dictionary words untill a good threshold after which we start bruteforcing.
 
