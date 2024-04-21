@@ -53,7 +53,7 @@ while True:
 
   for i := 0 to size_word:
     if (c := wrong_position[i]) != Null:
-      j := index to insert potential contender that should be different than `i` and not in GLOBAL_wrong_position.
+      j := index to insert potential contender that should be different than `i` and not in GLOBAL_wrong_position[c].
       secret[j] := c
 
       # update GLOBAL_wrong_position to keep track of which indexes have been tried for this character:
