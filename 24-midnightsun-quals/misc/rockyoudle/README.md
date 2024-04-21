@@ -1,4 +1,4 @@
-# Rockyoudl
+# Rockyoudle
 Mastermind game using dictionary
 
 ## Presentation
@@ -36,6 +36,9 @@ def filter_dictionary(correct, wrong_pos, wrong):
 
   Remove from the dictionary words that have characters in the position that was wrong (wrong_position)
   # In the above example, all words that have a '4' as their 3rd character
+
+  Remove all words that don't have the contender character (wrong_pos)
+  # In the above example all words that don't have a '4'
 
 
 list alphabet := numbers + most_common_letters_alphabet + rest_alphabet
